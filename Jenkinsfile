@@ -17,10 +17,16 @@ pipeline{
                 maven 'Maven_3.5.3'
             }
             steps{
-                    sh 'mvn test'
                     junit 'target/surefire-reports/*.xml'
             }
         }
+        stage('Jacoco') {
+             steps {
+                sh './jenkins_build.sh'
+                junit '*/build/test-results/*.xml'
+                step( [ $class: 'JacocoPublisher' ] )
+             }
         }
-    }
-}
+     }
+ }
+
